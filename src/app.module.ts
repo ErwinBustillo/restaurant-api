@@ -1,0 +1,37 @@
+import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
+import { RestaurantModule } from './restaurant/restaurant.module';
+import * as ormconfig from './ormconfig';
+import { schema } from './config.schema';
+
+@Module({
+  imports: [
+    ConfigModule.forRoot({
+      validationSchema: schema,
+    }),
+    AuthModule,
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => {
+        const isProd = configService.get('NODE_ENV') === 'prod';
+        return {
+          ...ormconfig,
+          ssl: isProd,
+          extra: {
+            ssl: isProd ? { rejectUnauthorized: false } : null,
+          },
+          autoLoadEntities: true,
+        };
+      },
+    }),
+    RestaurantModule,
+  ],
+  controllers: [AppController],
+  providers: [AppService],
+})
+export class AppModule {}
