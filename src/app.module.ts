@@ -5,9 +5,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { RestaurantModule } from './restaurant/restaurant.module';
-import * as ormconfig from './ormconfig';
+import { DatabaseSettings } from './ormconfig';
 import { schema } from './config.schema';
-
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -18,9 +17,11 @@ import { schema } from './config.schema';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
-        const isProd = configService.get('NODE_ENV') === 'prod';
+        const isProd = configService.get('NODE_ENV') === 'production';
+        const dbSettings = new DatabaseSettings(configService);
+        const ormConfig = dbSettings.getConfig();
         return {
-          ...ormconfig,
+          ...ormConfig,
           ssl: isProd,
           extra: {
             ssl: isProd ? { rejectUnauthorized: false } : null,

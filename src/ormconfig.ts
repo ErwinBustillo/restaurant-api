@@ -1,20 +1,30 @@
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConnectionOptions } from 'typeorm';
 
-const config: ConnectionOptions = {
-    type: 'postgres',
-    host: process.env.DB_HOST,
-    port: parseInt(process.env.DB_PORT),
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE,
-    entities: [__dirname + '/**/*.entity{.ts,.js}'],
-    synchronize: false,
-    migrationsRun: true,
-    logging: true,
-    migrations: [__dirname + '/../migrations/**/*{.ts,.js}'],
-    cli: {
-        migrationsDir: './migrations',
-    }
-}
+@Injectable()
+export class DatabaseSettings {
+  constructor(private readonly configService: ConfigService) {}
 
-export = config;
+  public getConfig(): TypeOrmModuleOptions {
+    const config: ConnectionOptions = {
+      type: 'postgres',
+      host: this.configService.get('DB_HOST'),
+      port: parseInt(this.configService.get('DB_PORT')),
+      username: this.configService.get('DB_USERNAME'),
+      password: this.configService.get('DB_PASSWORD'),
+      database: this.configService.get('DB_DATABASE'),
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      synchronize: false,
+      migrationsRun: true,
+      logging:
+        this.configService.get('NODE_ENV') === 'production' ? false : true,
+      migrations: [__dirname + '/../migrations/**/*{.ts,.js}'],
+      cli: {
+        migrationsDir: './migrations',
+      },
+    };
+    return config;
+  }
+}
