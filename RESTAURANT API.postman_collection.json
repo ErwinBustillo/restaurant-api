@@ -1,0 +1,354 @@
+{
+	"info": {
+		"_postman_id": "595abb93-3daa-48a0-a744-8c701cc1a5c1",
+		"name": "RESTAURANT API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "SIGN UP",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"Pedro\",\r\n    \"lastName\":\"Alvarez\",\r\n    \"email\": \"p.alva@gmail.com\",\r\n    \"gender\":\"Male\",\r\n    \"password\": \"Alvarez10#\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ROOT}}/auth/register",
+					"host": [
+						"{{ROOT}}"
+					],
+					"path": [
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LOGIN",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let response = pm.response.json();\r",
+							"pm.environment.set('AUTH_TOKEN',response.authToken);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"erwin.bustillo@gmail.com\",\r\n    \"password\":\"Adminsu123456]\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ROOT}}/auth/login",
+					"host": [
+						"{{ROOT}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET PUBLIC RESTAURANTS",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{AUTH_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ROOT}}/restaurant/public",
+					"host": [
+						"{{ROOT}}"
+					],
+					"path": [
+						"restaurant",
+						"public"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE RESTAURANT",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{AUTH_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "La matriarca",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ROOT}}/restaurant/9ce3e556-5c3a-4add-8924-50516ccee1c9",
+					"host": [
+						"{{ROOT}}"
+					],
+					"path": [
+						"restaurant",
+						"9ce3e556-5c3a-4add-8924-50516ccee1c9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST RESTAURANT",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{AUTH_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "Alva fast food 2",
+							"type": "text"
+						},
+						{
+							"key": "address",
+							"value": "calle 80 # 45 - 60",
+							"type": "text"
+						},
+						{
+							"key": "phone",
+							"value": "3504562",
+							"type": "text"
+						},
+						{
+							"key": "zipCode",
+							"value": "080013",
+							"type": "text"
+						},
+						{
+							"key": "isPublic",
+							"value": "no",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{ROOT}}/restaurant",
+					"host": [
+						"{{ROOT}}"
+					],
+					"path": [
+						"restaurant"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE RESTAURANT",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{AUTH_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "{{ROOT}}/restaurant/9ce3e556-5c3a-4add-8924-50516ccee1c9",
+					"host": [
+						"{{ROOT}}"
+					],
+					"path": [
+						"restaurant",
+						"9ce3e556-5c3a-4add-8924-50516ccee1c9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET OWNED RESTAURANTS",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{AUTH_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ROOT}}/restaurant/owned",
+					"host": [
+						"{{ROOT}}"
+					],
+					"path": [
+						"restaurant",
+						"owned"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET PUBLIC RESTAURANTS WITH QUERY PARAMS",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{AUTH_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ROOT}}/restaurant/public?offset=0&limit=5",
+					"host": [
+						"{{ROOT}}"
+					],
+					"path": [
+						"restaurant",
+						"public"
+					],
+					"query": [
+						{
+							"key": "offset",
+							"value": "0"
+						},
+						{
+							"key": "limit",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LIKE A RESTAURANT",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{AUTH_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "{{ROOT}}/restaurant/vote/0272ab5e-808a-4867-8bb6-79748853e999",
+					"host": [
+						"{{ROOT}}"
+					],
+					"path": [
+						"restaurant",
+						"vote",
+						"0272ab5e-808a-4867-8bb6-79748853e999"
+					]
+				},
+				"description": "Set a like/vote for the restaurant provided"
+			},
+			"response": []
+		},
+		{
+			"name": "GET LIKED RESTAURANTS",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{AUTH_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ROOT}}/restaurant/liked",
+					"host": [
+						"{{ROOT}}"
+					],
+					"path": [
+						"restaurant",
+						"liked"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

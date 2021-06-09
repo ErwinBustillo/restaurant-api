@@ -111,6 +111,12 @@ export class RestaurantService {
       throw new NotFoundException(`Restaurant with id ${id} not found`);
     }
 
+    if (!restaurant.isPublic) {
+      throw new ForbiddenException(
+        'Not allowed to vote in private restaurants',
+      );
+    }
+
     const vote = await this.voteRepository.getByUserAndRestaurant(
       userId,
       restaurant.id,
@@ -126,7 +132,7 @@ export class RestaurantService {
       restaurantId: restaurant.id,
     });
 
-    const restaurantVoteCreated = await this.voteRepository.createVote(
+    await this.voteRepository.createVote(
       partialVote,
     );
     return {
