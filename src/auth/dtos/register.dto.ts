@@ -33,7 +33,7 @@ export class RegisterDTO {
   @IsDefined()
   @IsNotEmpty()
   @Matches(
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,}$/,
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!\]\@#?])[A-Za-z\d!@\]\#?]{10,}$/,
     {
       message:
         'password should contains at least 10 characters, one lowercase letter, one uppercase letter and one of the following characters: !, @, #, ? or ]',

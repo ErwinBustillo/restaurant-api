@@ -17,7 +17,8 @@ export class DatabaseSettings {
       database: this.configService.get('DB_DATABASE'),
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: false,
-      migrationsRun: true,
+      migrationsRun:
+        this.configService.get('RUN_MIGRATION') === 'TRUE' ? true : false,
       logging:
         this.configService.get('NODE_ENV') === 'production' ? false : true,
       migrations: [__dirname + '/../migrations/**/*{.ts,.js}'],

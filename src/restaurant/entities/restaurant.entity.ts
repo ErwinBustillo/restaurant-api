@@ -7,7 +7,9 @@ import {
   UpdateDateColumn,
   OneToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
+import { Vote } from './vote.entity';
 @Entity()
 export class Restaurant {
   @PrimaryGeneratedColumn('uuid')
@@ -28,8 +30,11 @@ export class Restaurant {
   @Column({ name: 'is_public' })
   isPublic: boolean;
 
+  @Column({ name: 'owner_id', nullable: true })
+  ownerId: string;
+
   @OneToOne((type) => User, { nullable: true })
-  @JoinColumn({ referencedColumnName: 'id', name: 'owner_id' })
+  @JoinColumn({ name: 'owner_id' })
   owner: User;
 
   @CreateDateColumn({ name: 'created_at' })
