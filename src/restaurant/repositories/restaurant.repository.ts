@@ -7,7 +7,7 @@ export class RestaurantRepository extends Repository<Restaurant> {
     { offset = 0, limit = 10 }: PaginationDTO,
     userId?: string,
   ) {
-    let where: any = {};
+    const where: any = {};
     if (userId) {
       where.ownerId = userId;
     } else {
@@ -41,8 +41,7 @@ export class RestaurantRepository extends Repository<Restaurant> {
       ...restaurantInput,
     });
 
-    const restaurantCreated = await this.save(restaurant);
-    return restaurantCreated;
+    return await this.save(restaurant);
   }
 
   updateRestaurant(id: string, restaurantInput: Partial<Restaurant>) {

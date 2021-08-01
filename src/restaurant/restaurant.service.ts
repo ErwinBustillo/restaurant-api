@@ -38,18 +38,32 @@ export class RestaurantService {
   async createRestaurant(payload: CreateRestaurantDTO, { userId }: JwtPayload) {
     const { isPublic, ...restaurantInput } = payload;
 
+    const exists = await this.restaurantRepository.findOne({
+      where: {
+        name: restaurantInput.name,
+      },
+    });
+    if (exists) {
+      throw new ConflictException(
+        `Restaurant with name ${restaurantInput.name} is already taken ! `,
+      );
+    }
     const restaurant = this.restaurantRepository.create(restaurantInput);
     restaurant.isPublic = isPublic === PUBLIC.YES ? true : false;
     restaurant.ownerId = userId;
-    const newRestaurant = await this.restaurantRepository.createRestaurant(
-      restaurant,
-    );
+    try {
+      const newRestaurant = await this.restaurantRepository.createRestaurant(
+        restaurant,
+      );
 
-    return {
-      message: 'Restaurant created!',
-      id: newRestaurant.id,
-      createdAt: newRestaurant.createdAt,
-    };
+      return {
+        message: 'Restaurant created!',
+        id: newRestaurant.id,
+        createdAt: newRestaurant.createdAt,
+      };
+    } catch (error) {
+      throw error;
+    }
   }
 
   async updateRestaurant(
@@ -132,9 +146,7 @@ export class RestaurantService {
       restaurantId: restaurant.id,
     });
 
-    await this.voteRepository.createVote(
-      partialVote,
-    );
+    await this.voteRepository.createVote(partialVote);
     return {
       message: `Vote for restaurant with ${partialVote.restaurantId} saved!`,
     };

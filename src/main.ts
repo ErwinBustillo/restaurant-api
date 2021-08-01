@@ -3,7 +3,10 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { bodyParser: true });
+  const app = await NestFactory.create(AppModule, {
+    bodyParser: true,
+    cors: true,
+  });
   app.useGlobalPipes(
     new ValidationPipe({
       forbidUnknownValues: true,

@@ -1,10 +1,10 @@
 {
   "name": "restaurant-api",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
-  "author": "",
-  "private": true,
-  "license": "UNLICENSED",
+  "author": "Erwin Bustillo",
+  "private": false,
+  "license": "MIT",
   "scripts": {
     "prebuild": "rimraf dist",
     "prestart:prod": "rimraf dist && npm run build",
@@ -21,14 +21,14 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js --config ./src/setting.orm.ts",
-    "typeorm:migrate": "npm run typeorm migration:generate -- -n",
+    "typeorm": "ts-node --files -r tsconfig-paths/register ./node_modules/typeorm/cli.js --config src/dbconfig.ts",
+    "typeorm:migrate": "npm run typeorm -- migration:generate --name",
     "typeorm:run": "npm run typeorm migration:run",
-    "typeorm:revert": "npm run typeorm migration:revert"
+    "typeorm:undo": "npm run typeorm migration:revert"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint && npm run test"
+      "pre-commit":"npm run lint && npm run test"
     }
   },
   "dependencies": {
@@ -43,7 +43,6 @@
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
     "dotenv": "^10.0.0",
-    "husky": "^6.0.0",
     "joi": "^17.4.0",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
@@ -68,6 +67,7 @@
     "eslint": "^7.22.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-prettier": "^3.3.1",
+    "husky": "^6.0.0",
     "jest": "^26.6.3",
     "prettier": "^2.2.1",
     "supertest": "^6.1.3",

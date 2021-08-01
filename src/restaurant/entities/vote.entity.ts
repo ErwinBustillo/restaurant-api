@@ -14,10 +14,10 @@ export class Vote {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ name: 'user_id' })
+  @Column({ name: 'user_id', nullable: false })
   userId: string;
 
-  @Column({ name: 'restaurant_id', nullable: true })
+  @Column({ name: 'restaurant_id', nullable: false })
   restaurantId: string;
 
   @OneToOne((type) => User, { nullable: false })

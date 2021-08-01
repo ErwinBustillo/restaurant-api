@@ -17,8 +17,11 @@ export class AuthService {
   async login(payload: LoginDTO) {
     const { email, password } = payload;
     const user = await this.userRepository.findOne({ email });
-    const isValid = await bcrypt.compare(password, user.password);
-    if (user && isValid) {
+    if (!user) {
+      throw new UnauthorizedException('Invalid creedentials');
+    }
+    const isValid = await bcrypt.compare(password, user?.password);
+    if (isValid) {
       const payload: JwtPayload = { userId: user.id };
       return {
         authToken: this.jwtService.sign(payload),
@@ -28,7 +31,14 @@ export class AuthService {
     }
   }
 
-  register(payload: RegisterDTO) {
-    return this.userRepository.createUser(payload);
+  async register(payload: RegisterDTO) {
+    try {
+      await this.userRepository.createUser(payload);
+      return {
+        msj: 'user created on database !',
+      };
+    } catch (error) {
+      throw error;
+    }
   }
 }

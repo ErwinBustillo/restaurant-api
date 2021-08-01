@@ -30,7 +30,7 @@ export class Restaurant {
   @Column({ name: 'is_public' })
   isPublic: boolean;
 
-  @Column({ name: 'owner_id', nullable: true })
+  @Column({ name: 'owner_id', nullable: true, unique: false })
   ownerId: string;
 
   @OneToOne((type) => User, { nullable: true })
